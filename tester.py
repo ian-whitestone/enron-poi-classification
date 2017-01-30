@@ -1,8 +1,8 @@
 #!/usr/bin/pickle
 
 """ a basic script for importing student's POI identifier,
-    and checking the results that they get from it 
- 
+    and checking the results that they get from it
+
     requires that the algorithm, dataset, and features list
     be written to my_classifier.pkl, my_dataset.pkl, and
     my_feature_list.pkl, respectively
@@ -30,7 +30,7 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
     false_negatives = 0
     true_positives = 0
     false_positives = 0
-    for train_idx, test_idx in cv: 
+    for train_idx, test_idx in cv:
         features_train = []
         features_test  = []
         labels_train   = []
@@ -41,7 +41,7 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
         for jj in test_idx:
             features_test.append( features[jj] )
             labels_test.append( labels[jj] )
-        
+
         ### fit the classifier using training set, and test on test set
         clf.fit(features_train, labels_train)
         predictions = clf.predict(features_test)
@@ -55,9 +55,9 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
             elif prediction == 1 and truth == 1:
                 true_positives += 1
             else:
-                print "Warning: Found a predicted label not == 0 or 1."
-                print "All predictions should take value 0 or 1."
-                print "Evaluating performance for processed predictions:"
+                print ("Warning: Found a predicted label not == 0 or 1.")
+                print ("All predictions should take value 0 or 1.")
+                print ("Evaluating performance for processed predictions:")
                 break
     try:
         total_predictions = true_negatives + false_negatives + false_positives + true_positives
@@ -66,24 +66,24 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
         recall = 1.0*true_positives/(true_positives+false_negatives)
         f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
         f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
-        print clf
-        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision = 5)
-        print RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives, false_negatives, true_negatives)
-        print ""
+        print (clf)
+        print (PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision = 5))
+        print (RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives, false_negatives, true_negatives))
+        print ("")
     except:
-        print "Got a divide by zero when trying out:", clf
-        print "Precision or recall may be undefined due to a lack of true positive predicitons."
+        print ("Got a divide by zero when trying out:", clf)
+        print ("Precision or recall may be undefined due to a lack of true positive predicitons.")
 
 CLF_PICKLE_FILENAME = "my_classifier.pkl"
 DATASET_PICKLE_FILENAME = "my_dataset.pkl"
 FEATURE_LIST_FILENAME = "my_feature_list.pkl"
 
 def dump_classifier_and_data(clf, dataset, feature_list):
-    with open(CLF_PICKLE_FILENAME, "w") as clf_outfile:
+    with open(CLF_PICKLE_FILENAME, "wb") as clf_outfile:
         pickle.dump(clf, clf_outfile)
-    with open(DATASET_PICKLE_FILENAME, "w") as dataset_outfile:
+    with open(DATASET_PICKLE_FILENAME, "wb") as dataset_outfile:
         pickle.dump(dataset, dataset_outfile)
-    with open(FEATURE_LIST_FILENAME, "w") as featurelist_outfile:
+    with open(FEATURE_LIST_FILENAME, "wb") as featurelist_outfile:
         pickle.dump(feature_list, featurelist_outfile)
 
 def load_classifier_and_data():
